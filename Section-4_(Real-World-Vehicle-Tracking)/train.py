@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from dataset import LoadDataset
-from lstm_model import LSTM
+from model import LSTM
 from utils import fix_seed, average_meter
 from config import read_all_arguments
 

@@ -7,7 +7,7 @@ import numpy as np
 import torch
 
 from ultralytics import YOLO
-from lstm_model import LSTM
+from model import LSTM
 from config import read_all_arguments
 
 
@@ -27,7 +27,7 @@ def main(opt) :
     out = cv2.VideoWriter(f"{save_dir}/tracking_prediction.avi", fourcc, cap.get(cv2.CAP_PROP_FPS), (opt.video_size, opt.video_size))
     
     # Create LSTM Model Instance
-    lstm = LSTM(opt)
+    lstm = LSTM(opt).eval()
     
     # Load Pretrained LSTM Model Weight
     weights = torch.load("ckpt/lstm/latest.pth")
@@ -39,7 +39,6 @@ def main(opt) :
     
     # Assign Device
     lstm = lstm.to(device)
-    lstm.eval()
     
     # Create Dictionary Instance
     track_history = defaultdict(lambda: [])
@@ -59,7 +58,6 @@ def main(opt) :
                 track_ids = results[0].boxes.id.int().cpu().tolist()
                 cls_ids = results[0].boxes.cls.int().cpu().tolist()
 
-            
                 # Visualize the Results on the Frame
                 annotated_frame = results[0].plot()
 
